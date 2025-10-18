@@ -1,5 +1,3 @@
-// app/src/main/java/com/example/sendit/ui/screens/MapScreen.kt
-
 package com.example.sendit.ui.screens
 
 import android.Manifest

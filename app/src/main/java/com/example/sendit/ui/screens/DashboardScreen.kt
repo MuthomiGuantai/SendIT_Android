@@ -9,7 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DashboardScreen(onLogout: () -> Unit) {
+fun DashboardScreen(onLogout: () -> Unit,
+                    onNavigateToMap: () -> Unit,
+                    onNavigateToPayment: () -> Unit,
+                    onNavigateToTransactions: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -18,6 +21,18 @@ fun DashboardScreen(onLogout: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Welcome to Dashboard")
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onNavigateToMap) {
+            Text("Select Location")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = onNavigateToPayment) {
+            Text("Make Payment")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = onNavigateToTransactions) {
+            Text("View Transactions")
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onLogout) {
             Text("Logout")
