@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private const val BASE_URL = "http://your-flask-server:5000/" // Replace with your backend URL
+    private const val BASE_URL = "https://sendit-74d3.onrender.com" // Replace with your backend URL
     private var retrofit: Retrofit? = null
 
     fun getClient(): Retrofit {

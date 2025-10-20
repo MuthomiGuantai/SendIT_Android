@@ -20,7 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun LoginScreen(onLoginSuccess: () -> Unit) {
+fun LoginScreen(onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -50,6 +50,10 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         Button(onClick = { login(context, email, password, onLoginSuccess) }) {
             Text("Login")
         }
+        Spacer(modifier = Modifier.height(8.dp))
+        TextButton(onClick = onNavigateToRegister) {
+            Text("Need an account? Register")
+        }
     }
 }
 
@@ -59,17 +63,19 @@ private fun login(context: Context, email: String, password: String, onLoginSucc
     api.login(request).enqueue(object : Callback<LoginResponse> {
         override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
             if (response.isSuccessful) {
-                response.body()?.let {
-                    SessionManager(context).saveToken(it.token)
+                response.body()?.let { loginResponse ->
+                    SessionManager(context).saveToken(loginResponse.token)
                     onLoginSuccess()
+                } ?: run {
+                    Toast.makeText(context, "No response body", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Login failed: ${response.code()}", Toast.LENGTH_SHORT).show()
             }
         }
 
         override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-            Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
         }
     })
 }
